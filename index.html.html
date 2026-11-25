@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#120b10" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet" />
+  <title>Nifemi’s Cycle</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --card: #161616;
+      --card-2: #1e1e1e;
+      --pink: #ff6b9d;
+      --pink-dark: #e84a7f;
+      --pink-soft: #ff8fb3;
+      --pink-glow: rgba(255, 107, 157, 0.25);
+      --white: #f5f5f5;
+      --gray: #9a9a9a;
+      --border: #2a2a2a;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      padding-bottom: 88px;
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: var(--card);
+      padding: 20px 16px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    header h1 span { color: var(--pink); }
+
+    header p {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 14px 14px 0;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .card h2 {
+      font-size: 0.95rem;
+      font-weight: 650;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      background: var(--card-2);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .stat .label {
+      font-size: 0.68rem;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .stat .value {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-top: 3px;
+      color: var(--pink);
+    }
+
+    .phase-badge {
+      display: inline-block;
+      background: var(--pink);
+      color: #000;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-top: 10px;
+    }
+
+    .prediction-box {
+      background: var(--card-2);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .prediction-box p {
+      font-size: 0.9rem;
+      margin: 4px 0;
+    }
+
+    .prediction-box strong { color: var(--pink); }
+
+    .settings-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .settings-row label {
+      flex: 1;
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    input[type="number"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      margin-top: 4px;
+      padding: 11px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--card-2);
+      color: var(--white);
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--pink);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform 0.12s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--pink);
+      color: #000;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--pink);
+      color: var(--pink);
+      margin-top: 8px;
+    }
+
+    .date-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .date-input-row input { flex: 1; }
+
+    .history-list { list-style: none; }
+
+    .history-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+    }
+
+    .history-list li:last-child { border-bottom: none; }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--pink);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .month-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .month-nav button {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.15rem;
+      color: var(--pink);
+      cursor: pointer;
+    }
+
+    .month-nav h3 { font-size: 0.95rem; font-weight: 650; }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .cal-header {
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--gray);
+      font-weight: 650;
+      padding: 5px 0;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .cal-day.empty { visibility: hidden; }
+    .cal-day.today { box-shadow: inset 0 0 0 2px var(--white); font-weight: 700; }
+    .cal-day.period { background: var(--pink); color: #000; font-weight: 700; }
+    .cal-day.fertile { background: #3a2030; color: var(--pink-soft); }
+    .cal-day.ovulation { background: var(--pink-dark); color: #000; font-weight: 700; }
+    .cal-day.predicted { background: #2a1a22; color: var(--pink); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-top: 12px;
+      font-size: 0.7rem;
+      color: var(--gray);
+    }
+
+    .legend span { display: flex; align-items: center; gap: 4px; }
+    .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+    .notes-area { min-height: 90px; resize: vertical; }
+
+    .empty-state {
+      text-align: center;
+      color: var(--gray);
+      padding: 16px 8px;
+      font-size: 0.9rem;
+    }
+
+    .fun-message {
+      background: linear-gradient(135deg, #1a1218, #221820);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 0.9rem;
+      border: 1px solid #2a1a22;
+      color: var(--pink-soft);
+    }
+
+    /* GAMES LIST */
+    .games-intro {
+      text-align: center;
+      padding: 6px 0 10px;
+      color: var(--gray);
+      font-size: 0.88rem;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .game-card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 16px 12px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.12s, border-color 0.15s;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .game-card:active { transform: scale(0.96); border-color: var(--pink); }
+
+    .game-card .g-icon { font-size: 1.7rem; margin-bottom: 6px; pointer-events: none; }
+    .game-card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 2px; pointer-events: none; }
+    .game-card p { font-size: 0.7rem; color: var(--gray); pointer-events: none; }
+
+    /* GAME SCREENS */
+    .game-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .game-screen.active { display: flex; }
+
+    .game-header {
+      background: var(--card);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .game-header button {
+      background: var(--card-2);
+      border: 1px solid var(--border);
+      color: var(--pink);
+      font-weight: 650;
+      padding: 7px 12px;
+      border-radius: 18px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .game-header h2 { font-size: 1rem; font-weight: 700; }
+
+    .game-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .score-bar span { color: var(--pink); }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 9px 0 16px;
+      z-index: 60;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 0.68rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 10px;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .nav-item.active { color: var(--pink); }
+    .nav-item .icon { font-size: 1.3rem; pointer-events: none; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    footer {
+      text-align: center;
+      margin: 16px 0 8px;
+      font-size: 0.7rem;
+      color: var(--gray);
+    }
+
+    /* ===== GAME SPECIFIC ===== */
+
+    /* Canvas common */
+    .game-canvas {
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      touch-action: none;
+      max-width: 100%;
+    }
+
+    /* Memory */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .memory-card {
+      aspect-ratio: 1;
+      background: var(--pink);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #000;
+      font-weight: 700;
+      transition: transform 0.15s;
+    }
+
+    .memory-card.flipped, .memory-card.matched {
+      background: var(--card-2);
+      border: 2px solid var(--pink);
+      color: var(--white);
+    }
+
+    .memory-card.matched { opacity: 0.55; pointer-events: none; }
+
+    /* Breath */
+    .breath-circle {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+    }
+
+    .breath-circle.inhale {
+      transform: scale(1.4);
+      box-shadow: 0 0 0 28px var(--pink-glow);
+    }
+
+    .breath-text {
+      margin-top: 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Simon */
+    .simon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 240px;
+    }
+
+    .simon-btn {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .simon-btn.active { opacity: 1; transform: scale(1.05); }
+    .simon-btn:nth-child(1) { background: #ff6b9d; }
+    .simon-btn:nth-child(2) { background: #6b9dff; }
+    .simon-btn:nth-child(3) { background: #6bff9d; }
+    .simon-btn:nth-child(4) { background: #ffd06b; }
+
+    /* Whack */
+    .whack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .whack-hole {
+      aspect-ratio: 1;
+      background: var(--card-2);
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .whack-hole.active { background: var(--pink); transform: scale(1.08); }
+
+    /* Reaction */
+    .reaction-target {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--pink);
+      display: none;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    .reaction-msg {
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--gray);
+    }
+
+    /* Doodle */
+    #doodleCanvas {
+      background: #111;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      touch-action: none;
+    }
+
+    .doodle-tools {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .doodle-tools button {
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      color: var(--white);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .doodle-tools button.active { border-color: var(--pink); color: var(--pink); }
+
+    /* Sliding Puzzle */
+    .puzzle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      width: 260px;
+    }
+
+    .puzzle-tile {
+      aspect-ratio: 1;
+      background: var(--pink);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .puzzle-tile.empty { background: var(--card-2); border: 1px dashed var(--border); color: transparent; }
+
+    /* Catcher */
+    #catchCanvas {
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      touch-action: none;
+    }
+
+    /* Sequence */
+    .seq-display {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 8px;
+      margin-bottom: 16px;
+      min-height: 48px;
+      color: var(--pink);
+    }
+
+    .seq-input {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .seq-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      border: none;
+      background: var(--card-2);
+      color: var(--white);
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+    }
+
+    .seq-btn:active { background: var(--pink); color: #000; }
+
+    /* Stress Ball */
+    .stress-ball {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--pink-soft), var(--pink-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #000;
+      cursor: pointer;
+      transition: transform 0.15s;
+      user-select: none;
+      box-shadow: 0 0 40px var(--pink-glow);
+    }
+
+    .stress-ball:active { transform: scale(0.82); }
+
+    .game-msg {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: center;
+    }
+  </style>
+<style>
+:root{--bg:#120b10;--card:#1b1219;--card-2:#251923;--pink:#ff7ba9;--pink-dark:#e8467f;--pink-soft:#ffc2d6;--pink-glow:rgba(255,123,169,.28);--white:#f7eef2;--gray:#a99aa3;--border:#33232d;--phase:#a99aa3;
+--serif:"Fraunces",Georgia,"Times New Roman",serif;--sans:"DM Sans",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
+body{font-family:var(--sans);background-color:var(--bg);background-image:radial-gradient(120% 55% at 50% -8%,#2b1221 0%,rgba(18,11,16,0) 65%);background-repeat:no-repeat;padding-bottom:116px}
+header{background:rgba(18,11,16,.85);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);padding:calc(14px + env(safe-area-inset-top,0px)) 20px 12px;text-align:left}
+header p{font-size:.82rem;color:var(--gray);margin:0 0 1px}
+header h1{font-family:var(--serif);font-size:1.6rem;font-weight:600;letter-spacing:-.01em}
+.card{border-radius:20px;padding:18px;margin-bottom:14px}
+.card h2{font-family:var(--serif);font-size:1.08rem;font-weight:600;margin-bottom:14px}
+.fun-message{background:none;border:none;text-align:left;padding:6px 4px 14px;font-family:var(--serif);font-style:italic;font-size:1.2rem;line-height:1.3;color:var(--pink-soft)}
+/* hero ring */
+.hero{border-radius:28px;padding:24px 18px 18px;text-align:center;background:linear-gradient(180deg,#261822,var(--card))}
+.hero[data-phase=period]{--phase:#ff5c93}.hero[data-phase=follicular]{--phase:#ffb3cb}.hero[data-phase=fertile]{--phase:#c3a6ff}.hero[data-phase=ovulation]{--phase:#ffd27a}.hero[data-phase=luteal]{--phase:#8fb7ff}
+.ring-wrap{position:relative;width:min(250px,70vw);aspect-ratio:1;margin:0 auto 10px}
+.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:10;stroke-linecap:round}
+.ring-bg{stroke:rgba(255,255,255,.07)}
+.ring-arc{stroke:var(--phase);stroke-dasharray:527.8;transition:stroke-dashoffset 1.5s cubic-bezier(.2,.8,.2,1),stroke .6s;filter:drop-shadow(0 0 7px var(--pink-glow))}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-day{font-size:.82rem;color:var(--gray)}
+.ring-center b{font-family:var(--serif);font-size:4.2rem;line-height:1;font-weight:600}
+.ring-phase{font-size:1.02rem;font-weight:700;color:var(--phase);margin-top:6px}
+.countdown{font-weight:700;font-size:1.05rem;margin-top:4px}
+.tip{color:var(--gray);font-size:.9rem;max-width:32ch;margin:6px auto 0}
+.pred{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;text-align:left}
+.pred div{background:rgba(255,255,255,.045);border-radius:14px;padding:12px}
+.pred span{display:block;font-size:.76rem;color:var(--gray);margin-bottom:2px}
+.pred b{font-size:.9rem;font-weight:600}
+/* forms */
+input[type=number],input[type=date],textarea{border-radius:14px;padding:12px 14px;font-family:inherit}
+input:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px var(--pink-glow)}
+.btn{border-radius:999px;padding:14px;font-family:inherit}
+.btn-primary{background:var(--pink);color:#1d0a14}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--white);margin-top:10px;font-weight:600}
+.log-hint{font-size:.8rem;color:var(--gray);margin:14px 0 6px}
+.settings-row label{font-size:.82rem}
+.delete-btn{color:var(--gray)}
+/* calendar */
+.month-nav h3{font-family:var(--serif);font-size:1.05rem}
+.month-nav button{width:38px;height:38px}
+.calendar{gap:4px}
+.cal-header{font-size:.72rem;font-weight:600}
+.cal-day{border-radius:50%;font-size:.86rem}
+.cal-day.period{background:#ff5c93;color:#2a0714}
+.cal-day.fertile{background:rgba(195,166,255,.17);color:#dccdff}
+.cal-day.ovulation{background:#ffd27a;color:#2b1d00}
+.cal-day.predicted{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(255,92,147,.65);color:var(--pink)}
+.cal-day.today{box-shadow:inset 0 0 0 2px var(--white);font-weight:700}
+.legend{gap:8px 14px;font-size:.76rem}
+.legend i{border-radius:50%;width:11px;height:11px}
+.lp{background:#ff5c93}.lf{background:rgba(195,166,255,.45)}.lo{background:#ffd27a}.lpr{box-shadow:inset 0 0 0 1.5px rgba(255,92,147,.75)}
+/* games */
+.games-intro{text-align:left;padding:2px 4px 14px;font-size:.95rem}
+.game-card{border-radius:20px;padding:14px;text-align:left}
+.game-card .g-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;margin:0 0 12px;background:rgba(255,123,169,.14)}
+.game-card:nth-child(5n+2) .g-icon{background:rgba(195,166,255,.16)}
+.game-card:nth-child(5n+3) .g-icon{background:rgba(255,210,122,.15)}
+.game-card:nth-child(5n+4) .g-icon{background:rgba(143,183,255,.16)}
+.game-card:nth-child(5n) .g-icon{background:rgba(120,230,170,.13)}
+.game-card h3{font-size:.95rem}
+.game-header{padding:calc(12px + env(safe-area-inset-top,0px)) 14px 12px;background:var(--bg)}
+.game-header h2{font-family:var(--serif);font-size:1.1rem}
+.game-header button{border-radius:999px;padding:8px 14px}
+.score-bar{font-size:1rem}
+.game-canvas,#catchCanvas{border-radius:22px}
+.memory-card{background:var(--card-2);border:1px solid var(--border);border-radius:14px}
+.memory-card::after{content:"\2661";color:var(--pink);opacity:.55;font-size:1.3rem}
+.memory-card.flipped::after,.memory-card.matched::after{content:none}
+.breath-circle{background:radial-gradient(circle at 35% 30%,var(--pink-soft),var(--pink-dark))}
+.puzzle-tile{border-radius:14px}
+.whack-hole.active{box-shadow:0 0 18px var(--pink-glow)}
+/* nav */
+.bottom-nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:456px;margin:0 auto;padding:6px;border:1px solid var(--border);border-radius:26px;background:rgba(27,18,25,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.nav-item{flex:1;border-radius:20px;padding:8px 6px;font-size:.74rem;gap:3px;font-family:inherit}
+.nav-item.active{background:rgba(255,123,169,.15)}
+.nav-item svg{width:22px;height:22px;pointer-events:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* notes */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.chip{background:var(--card-2);border:1px solid var(--border);color:var(--white);border-radius:999px;padding:8px 14px;font:inherit;font-size:.85rem;cursor:pointer}
+.chip:active{border-color:var(--pink);color:var(--pink)}
+.tips{list-style:none;display:grid;gap:10px}
+.tips li{display:flex;gap:10px;font-size:.92rem;color:#d9ccd3}
+.tips li::before{content:"";width:6px;height:6px;margin-top:.55em;border-radius:50%;background:var(--pink);flex:none}
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(94px + env(safe-area-inset-bottom,0px));transform:translate(-50%,12px);background:var(--white);color:#1d0a14;padding:11px 18px;border-radius:999px;font-size:.9rem;font-weight:600;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:300;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+button:focus-visible,.game-card:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){.ring-arc{transition:none}}
+</style>
+
+<style>
+.dpad{display:grid;grid-template:". u ." 46px "l . r" 46px ". d ." 46px/56px 56px 56px;gap:4px;margin-top:12px}
+.dpad button{background:var(--card-2);border:1px solid var(--border);color:var(--pink);border-radius:14px;font-size:1.2rem;touch-action:manipulation}
+.dpad button:active{background:var(--pink);color:#1d0a14}
+.board2048{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(320px,86vw);aspect-ratio:1;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:8px;touch-action:none}
+.t2048{border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.35rem;background:rgba(255,255,255,.05);color:#1d0a14}
+.color-word{font-family:var(--serif);font-size:3.2rem;font-weight:600;margin:10px 0 28px;min-height:64px}
+.color-btns{display:flex;gap:12px;width:min(320px,86vw)}
+.color-btns .btn{flex:1}
+.ttt-grid{display:grid;grid-template-columns:repeat(3,92px);gap:8px}
+.ttt-cell{width:92px;height:92px;border-radius:18px;background:var(--card-2);border:1px solid var(--border);font-size:2.2rem;color:var(--white);touch-action:manipulation}
+.ttt-cell.win{border-color:var(--pink);background:rgba(255,123,169,.18)}
+</style>
+<script>try{if(localStorage.getItem("nc_pin"))document.documentElement.classList.add("haspin")}catch(e){}</script>
+<style>
+#lock{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;background-color:var(--bg);background-image:radial-gradient(120% 55% at 50% -8%,#2b1221 0%,rgba(18,11,16,0) 65%);padding:env(safe-area-inset-top,0px) 20px env(safe-area-inset-bottom,0px)}
+#lock.show,html.haspin #lock{display:flex}
+.lock-in{width:100%;max-width:320px;text-align:center}
+.lock-ic{font-size:2.4rem;margin-bottom:10px}
+.lock-in h2{font-family:var(--serif);font-size:1.4rem;font-weight:600}
+.lock-msg{min-height:1.3em;font-size:.85rem;color:var(--pink-soft);margin:6px 0 18px}
+.lock-dots{display:flex;gap:16px;justify-content:center;margin-bottom:28px}
+.lock-dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--pink);transition:background .15s}
+.lock-dots i.on{background:var(--pink)}
+.lock-dots.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center}
+.keypad button{width:72px;height:72px;border-radius:50%;background:var(--card-2);border:1px solid var(--border);color:var(--white);font:600 1.5rem var(--sans);touch-action:manipulation}
+.keypad button:active{background:var(--pink);color:#1d0a14}
+.keypad .blank{visibility:hidden}
+.lock-link{background:none;border:none;color:var(--gray);font:inherit;font-size:.88rem;margin-top:22px;padding:8px}
+.pin-btns{display:flex;gap:10px;flex-wrap:wrap}
+.pin-btns .btn{flex:1;min-width:110px;margin-top:0}
+.small-note{font-size:.8rem;color:var(--gray);margin:0 0 14px}
+.chat-head{display:flex;align-items:center;gap:12px;padding:2px 4px 12px}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#c3a6ff);color:#1d0a14;display:grid;place-items:center;font:600 1.25rem var(--serif)}
+.chat-head b{display:block;font-family:var(--serif);font-size:1.1rem}
+.chat-head span{font-size:.8rem;color:var(--gray)}
+.chat{display:flex;flex-direction:column;height:max(340px,calc(100dvh - 400px));background:var(--card);border:1px solid var(--border);border-radius:22px;overflow:hidden}
+.chat-log{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:4px;-webkit-overflow-scrolling:touch}
+.msg{max-width:84%;padding:10px 14px;border-radius:18px;font-size:.93rem;line-height:1.42;white-space:pre-wrap}
+.msg.bot{background:var(--card-2);border-bottom-left-radius:6px;align-self:flex-start}
+.msg.me{background:var(--pink);color:#1d0a14;border-bottom-right-radius:6px;align-self:flex-end}
+.msg.typing{color:var(--gray);letter-spacing:3px}
+.msg-act{align-self:flex-start;background:transparent;border:1px solid var(--pink);color:var(--pink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.85rem;margin:2px 0 6px}
+.chat-chips{display:flex;gap:8px;overflow-x:auto;padding:0 12px 10px;scrollbar-width:none}
+.chat-chips::-webkit-scrollbar{display:none}
+.chat-chips .chip{white-space:nowrap}
+.chat-in{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+.chat-in input{flex:1;font-size:16px;border-radius:999px;padding:11px 16px;background:var(--card-2);border:1px solid var(--border);color:var(--white);font-family:inherit}
+.chat-in button{width:44px;height:44px;border-radius:50%;border:none;background:var(--pink);color:#1d0a14;font-size:1.1rem;font-weight:700}
+.chat-note{font-size:.74rem;color:var(--gray);text-align:center;margin-top:8px}
+</style>
+<style>
+.dlg{position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;background:rgba(10,5,8,.72);padding:24px}
+.dlg.show{display:flex}
+.dlg-box{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:22px;max-width:340px;width:100%}
+.dlg-box p{font-size:.98rem;line-height:1.45;margin-bottom:18px;white-space:pre-line}
+.dlg-btns{display:flex;gap:10px}
+.dlg-btns .btn{flex:1;margin-top:0}
+</style>
+</head>
+<body>
+  <header>
+    <p id="greet">Hello</p>
+    <h1>Nifemi’s Cycle</h1>
+  </header>
+
+  <div class="dlg" id="dlg"><div class="dlg-box"><p id="dlgText"></p><div class="dlg-btns"><button class="btn btn-ghost" id="dlgNo">Cancel</button><button class="btn btn-primary" id="dlgYes">OK</button></div></div></div>
+  <div id="lock" role="dialog" aria-label="Passcode">
+    <div class="lock-in">
+      <div class="lock-ic">🌸</div>
+      <h2 id="lockTitle">Enter your passcode</h2>
+      <p class="lock-msg" id="lockMsg"></p>
+      <div class="lock-dots" id="lockDots"><i></i><i></i><i></i><i></i></div>
+      <div class="keypad" id="keypad"></div>
+      <button class="lock-link" id="lockLink" onclick="lockSecondary()">Forgot passcode?</button>
+    </div>
+  </div>
+  <div class="container">
+    <!-- CYCLE -->
+    <div class="page active" id="page-cycle">
+      <div class="fun-message" id="funMessage">You’re doing great today 💕</div>
+
+      <div class="card hero" id="hero" data-phase="none">
+        <div class="ring-wrap">
+          <svg class="ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-bg" cx="100" cy="100" r="84"/><circle class="ring-arc" id="ringArc" cx="100" cy="100" r="84" style="stroke-dashoffset:527.8"/></svg>
+          <div class="ring-center"><span class="ring-day">Cycle day</span><b id="cycleDay">–</b><span class="ring-phase" id="phaseName">–</span></div>
+        </div>
+        <p class="countdown" id="countdown"></p>
+        <p class="tip" id="phaseTip"></p>
+        <div class="pred" id="predictionBox">
+          <div><span>Next period</span><b id="nextPeriod">–</b></div>
+          <div><span>Fertile window</span><b id="fertileWindow">–</b></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Log a period</h2>
+        <button class="btn btn-primary" onclick="addPeriodToday()">Period started today</button>
+        <p class="log-hint">Started on a different day?</p>
+        <div class="date-input-row">
+          <input type="date" id="periodDate" />
+          <button class="btn btn-ghost" style="width:auto;padding:11px 20px;margin-top:0" onclick="addPeriod()">Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Cycle settings</h2>
+        <div class="settings-row">
+          <label>Cycle length<input type="number" id="cycleLength" min="20" max="45" value="28" /></label>
+          <label>Period length<input type="number" id="periodLength" min="2" max="10" value="4" /></label>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save settings</button>
+      </div>
+
+      <div class="card">
+        <div class="month-nav">
+          <button onclick="changeMonth(-1)">‹</button>
+          <h3 id="monthTitle">–</h3>
+          <button onclick="changeMonth(1)">›</button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+        <div class="legend">
+          <span><i class="lp"></i> Period</span>
+          <span><i class="lf"></i> Fertile</span>
+          <span><i class="lo"></i> Ovulation</span>
+          <span><i class="lpr"></i> Predicted</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Privacy</h2>
+        <p class="small-note" id="pinStatus"></p>
+        <div class="pin-btns">
+          <button class="btn btn-primary" id="pinSetBtn" onclick="startSetPin()">Set passcode</button>
+          <button class="btn btn-ghost" id="pinLockBtn" onclick="showLock('unlock')" style="display:none">Lock now</button>
+          <button class="btn btn-ghost" id="pinRemoveBtn" onclick="removePin()" style="display:none">Remove</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Period history</h2>
+        <ul class="history-list" id="historyList">
+          <li class="empty-state">No periods logged yet</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GAMES -->
+    <div class="page" id="page-games">
+      <p class="games-intro">Something small to take your mind off things</p>
+      <div class="games-grid" id="gamesGrid">
+        <div class="game-card" data-game="bubbles"><div class="g-icon">🫧</div><h3>Bubble Pop</h3><p>Tap to pop</p></div>
+        <div class="game-card" data-game="memory"><div class="g-icon">🃏</div><h3>Memory</h3><p>Match pairs</p></div>
+        <div class="game-card" data-game="breathe"><div class="g-icon">🌬️</div><h3>Calm Breath</h3><p>Relax</p></div>
+        <div class="game-card" data-game="whack"><div class="g-icon">💖</div><h3>Heart Whack</h3><p>Tap the hearts</p></div>
+        <div class="game-card" data-game="simon"><div class="g-icon">🎵</div><h3>Simon</h3><p>Repeat the pattern</p></div>
+        <div class="game-card" data-game="reaction"><div class="g-icon">⚡</div><h3>Reaction</h3><p>Tap when it appears</p></div>
+        <div class="game-card" data-game="catch"><div class="g-icon">⭐</div><h3>Star Catch</h3><p>Catch falling stars</p></div>
+        <div class="game-card" data-game="puzzle"><div class="g-icon">🧩</div><h3>Slide Puzzle</h3><p>Solve the tiles</p></div>
+        <div class="game-card" data-game="sequence"><div class="g-icon">🔢</div><h3>Sequence</h3><p>Remember the numbers</p></div>
+        <div class="game-card" data-game="stress"><div class="g-icon">🟠</div><h3>Stress Ball</h3><p>Squeeze it</p></div>
+        <div class="game-card" data-game="snake"><div class="g-icon">🐍</div><h3>Heart Snake</h3><p>Swipe to eat hearts</p></div>
+        <div class="game-card" data-game="g2048"><div class="g-icon">🌸</div><h3>2048</h3><p>Merge the tiles</p></div>
+        <div class="game-card" data-game="flap"><div class="g-icon">🕊️</div><h3>Heart Flap</h3><p>Tap to fly</p></div>
+        <div class="game-card" data-game="color"><div class="g-icon">🎨</div><h3>Color Clash</h3><p>Word vs color</p></div>
+        <div class="game-card" data-game="ttt"><div class="g-icon">❌</div><h3>Tic-Tac-Toe</h3><p>Beat the bot</p></div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="page" id="page-ask">
+      <div class="chat-head"><div class="avatar">A</div><div><b>Mrs A</b><span>Ask me anything about your cycle</span></div></div>
+      <div class="chat">
+        <div class="chat-log" id="chatLog"></div>
+        <div class="chat-chips" id="chatChips">
+          <button class="chip" onclick="askQ('Where am I in my cycle?')">Where am I in my cycle?</button>
+          <button class="chip" onclick="askQ('When is my next period?')">Next period?</button>
+          <button class="chip" onclick="askQ('Help with cramps')">Cramps</button>
+          <button class="chip" onclick="askQ('What should I eat?')">What to eat</button>
+          <button class="chip" onclick="askQ('Cheer me up')">Cheer me up</button>
+        </div>
+        <div class="chat-in"><input id="chatInput" type="text" placeholder="Type a message" autocomplete="off" /><button onclick="sendChat()" aria-label="Send">➤</button></div>
+      </div>
+      <p class="chat-note">Mrs A shares general info, not medical advice.</p>
+    </div>
+
+    <div class="page" id="page-notes">
+      <div class="card">
+        <h2>Notes & feelings</h2>
+        <div class="chips">
+          <button class="chip" onclick="addChip('Cramps')">Cramps</button>
+          <button class="chip" onclick="addChip('Low energy')">Low energy</button>
+          <button class="chip" onclick="addChip('Bloated')">Bloated</button>
+          <button class="chip" onclick="addChip('Cravings')">Cravings</button>
+          <button class="chip" onclick="addChip('Moody')">Moody</button>
+          <button class="chip" onclick="addChip('Feeling good')">Feeling good</button>
+        </div>
+        <textarea class="notes-area" id="notes" placeholder="How are you feeling? Cramps, mood, energy…"></textarea>
+        <button class="btn btn-primary" onclick="saveNotes()" style="margin-top:10px">Save notes</button>
+      </div>
+      <div class="card">
+        <h2>Quick relief</h2>
+        <ul class="tips">
+          <li>Heat pack on your lower belly</li>
+          <li>Gentle stretch or a short walk</li>
+          <li>Drink water</li>
+          <li>Rest is allowed. You don’t have to push.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer id="mainFooter">All data stays only on this device</footer>
+
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="nav-item active" data-page="cycle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Cycle</button>
+    <button class="nav-item" data-page="games"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5.5"/><path d="M8 10.5v4M6 12.5h4M15.5 11.5h.01M17.5 13.5h.01"/></svg>Games</button>
+    <button class="nav-item" data-page="ask"><svg viewBox="0 0 24 24"><path d="M5 6h14a2 2 0 012 2v7a2 2 0 01-2 2h-7l-4 3v-3H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>Mrs A</button>
+    <button class="nav-item" data-page="notes"><svg viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19l-4 1z"/></svg>Notes</button>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ========== GAME SCREENS ========== -->
+
+  <!-- 1. Bubble Pop -->
+  <div class="game-screen" id="game-bubbles">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Bubble Pop</h2>
+      <button onclick="startBubbles()">Reset</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="bubbleScore">0</span></div>
+      <canvas class="game-canvas" id="bubbleCanvas" width="340" height="400"></canvas>
+      <p class="game-msg">Tap the bubbles as fast as you can</p>
+    </div>
+  </div>
+
+  <!-- 2. Memory -->
+  <div class="game-screen" id="game-memory">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Memory Match</h2>
+      <button onclick="startMemory()">New</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Moves: <span id="memoryMoves">0</span></div>
+      <div class="memory-grid" id="memoryGrid"></div>
+    </div>
+  </div>
+
+  <!-- 3. Breathe -->
+  <div class="game-screen" id="game-breathe">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Calm Breath</h2>
+      <div style="width:60px"></div>
+    </div>
+    <div class="game-body">
+      <div class="breath-circle" id="breathCircle">Breathe</div>
+      <div class="breath-text" id="breathText">Tap Start when ready</div>
+      <button class="btn btn-primary" style="margin-top:22px;width:auto;padding:12px 28px" id="breathBtn" onclick="toggleBreath()">Start</button>
+    </div>
+  </div>
+
+  <!-- 4. Heart Whack -->
+  <div class="game-screen" id="game-whack">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Heart Whack</h2>
+      <button onclick="startWhack()">New</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="whackScore">0</span> · Time: <span id="whackTime">30</span>s</div>
+      <div class="whack-grid" id="whackGrid"></div>
+      <p class="game-msg">Tap the hearts before they disappear</p>
+    </div>
+  </div>
+
+  <!-- 5. Simon -->
+  <div class="game-screen" id="game-simon">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Simon</h2>
+      <button onclick="startSimon()">New</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Level: <span id="simonLevel">1</span></div>
+      <div class="simon-grid" id="simonGrid">
+        <button class="simon-btn" data-i="0"></button>
+        <button class="simon-btn" data-i="1"></button>
+        <button class="simon-btn" data-i="2"></button>
+        <button class="simon-btn" data-i="3"></button>
+      </div>
+      <p class="game-msg" id="simonMsg">Watch the pattern, then repeat it</p>
+    </div>
+  </div>
+
+  <!-- 6. Reaction -->
+  <div class="game-screen" id="game-reaction">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Reaction</h2>
+      <button onclick="startReaction()">Go</button>
+    </div>
+    <div class="game-body" id="reactionBody" style="position:relative;min-height:360px">
+      <div class="score-bar">Best: <span id="reactionBest">–</span> ms</div>
+      <div class="reaction-msg" id="reactionMsg">Tap Go, then tap the circle as soon as it appears</div>
+      <div class="reaction-target" id="reactionTarget"></div>
+    </div>
+  </div>
+
+  <!-- 7. Star Catch -->
+  <div class="game-screen" id="game-catch">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Star Catch</h2>
+      <button onclick="startCatch()">New</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="catchScore">0</span></div>
+      <canvas class="game-canvas" id="catchCanvas" width="340" height="400"></canvas>
+      <p class="game-msg">Move the basket by dragging · Catch the stars</p>
+    </div>
+  </div>
+
+  <!-- 8. Slide Puzzle -->
+  <div class="game-screen" id="game-puzzle">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Slide Puzzle</h2>
+      <button onclick="startPuzzle()">Shuffle</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Moves: <span id="puzzleMoves">0</span></div>
+      <div class="puzzle-grid" id="puzzleGrid"></div>
+      <p class="game-msg">Arrange the numbers 1–8</p>
+    </div>
+  </div>
+
+  <!-- 9. Sequence -->
+  <div class="game-screen" id="game-sequence">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Sequence</h2>
+      <button onclick="startSequence()">New</button>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Level: <span id="seqLevel">1</span></div>
+      <div class="seq-display" id="seqDisplay"></div>
+      <div class="seq-input" id="seqInput"></div>
+      <p class="game-msg" id="seqMsg">Memorize the numbers, then tap them in order</p>
+    </div>
+  </div>
+
+  <!-- 10. Stress Ball -->
+  <div class="game-screen" id="game-stress">
+    <div class="game-header">
+      <button onclick="closeGame()">← Back</button>
+      <h2>Stress Ball</h2>
+      <div style="width:60px"></div>
+    </div>
+    <div class="game-body">
+      <div class="score-bar">Squeezes: <span id="stressCount">0</span></div>
+      <div class="stress-ball" id="stressBall" ontouchstart="squeezeBall(event)" onmousedown="squeezeBall(event)">Squeeze</div>
+      <p class="game-msg">Press and hold · Release to bounce back</p>
+    </div>
+  </div>
+
+  <div class="game-screen" id="game-snake">
+    <div class="game-header"><button onclick="closeGame()">← Back</button><h2>Heart Snake</h2><button onclick="startSnake()">New</button></div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="snakeScore">0</span> · Best: <span id="snakeBest">0</span></div>
+      <canvas class="game-canvas" id="snakeCanvas" width="320" height="320" style="height:auto"></canvas>
+      <div class="dpad"><button style="grid-area:u" onclick="turnSnake(0,-1)">↑</button><button style="grid-area:l" onclick="turnSnake(-1,0)">←</button><button style="grid-area:r" onclick="turnSnake(1,0)">→</button><button style="grid-area:d" onclick="turnSnake(0,1)">↓</button></div>
+      <p class="game-msg" id="snakeMsg">Swipe or use the arrows</p></div>
+  </div>
+  <div class="game-screen" id="game-g2048">
+    <div class="game-header"><button onclick="closeGame()">← Back</button><h2>2048</h2><button onclick="start2048()">New</button></div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="g2048Score">0</span> · Best: <span id="g2048Best">0</span></div>
+      <div class="board2048" id="g2048Board"></div>
+      <p class="game-msg" id="g2048Msg">Swipe to slide. Equal tiles merge.</p></div>
+  </div>
+  <div class="game-screen" id="game-flap">
+    <div class="game-header"><button onclick="closeGame()">← Back</button><h2>Heart Flap</h2><button onclick="startFlap()">New</button></div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="flapScore">0</span> · Best: <span id="flapBest">0</span></div>
+      <canvas class="game-canvas" id="flapCanvas" width="320" height="400" style="height:auto"></canvas>
+      <p class="game-msg" id="flapMsg">Tap to flap</p></div>
+  </div>
+  <div class="game-screen" id="game-color">
+    <div class="game-header"><button onclick="closeGame()">← Back</button><h2>Color Clash</h2><button onclick="startColor()">New</button></div>
+    <div class="game-body">
+      <div class="score-bar">Score: <span id="colorScore">0</span> · Time: <span id="colorTime">30</span>s</div>
+      <div class="color-word" id="colorWord">Ready?</div>
+      <div class="color-btns"><button class="btn btn-primary" onclick="answerColor(true)">Match</button><button class="btn btn-ghost" style="margin-top:0" onclick="answerColor(false)">No match</button></div>
+      <p class="game-msg" id="colorMsg">Does the word match the color it’s written in? Wrong answers cost a point.</p></div>
+  </div>
+  <div class="game-screen" id="game-ttt">
+    <div class="game-header"><button onclick="closeGame()">← Back</button><h2>Tic-Tac-Toe</h2><button onclick="startTTT()">New</button></div>
+    <div class="game-body">
+      <div class="score-bar">You: <span id="tttW">0</span> · Bot: <span id="tttL">0</span> · Draws: <span id="tttD">0</span></div>
+      <div class="ttt-grid" id="tttGrid"></div>
+      <p class="game-msg" id="tttMsg">You are ❌. Your move.</p></div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "nifemis_cycle_data_v3";
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : { periods: [], cycleLength: 28, periodLength: 4, notes: "" };
+    }
+    function saveData(d) { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
+    let data = loadData();
+    let viewYear, viewMonth;
+
+    function parseDate(s) { const [y,m,d]=s.split("-").map(Number); return new Date(y,m-1,d); }
+    function formatDate(d) { const p=n=>String(n).padStart(2,"0"); return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate()); }
+    function formatDisplay(d) { return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); }
+    function daysBetween(a,b) { return Math.round((b-a)/86400000); }
+    function addDays(d,n) { const x=new Date(d); x.setDate(x.getDate()+n); return x; }
+
+    function getLastPeriod() {
+      if (!data.periods.length) return null;
+      return parseDate([...data.periods].sort().pop());
+    }
+    function getCurrentCycleDay() {
+      const last = getLastPeriod(); if (!last) return null;
+      const t = new Date(); t.setHours(0,0,0,0);
+      const day = daysBetween(last,t)+1; return day>0?day:null;
+    }
+    function getPhase(day) {
+      if (!day) return {name:"–",key:""};
+      const ov = data.cycleLength-14;
+      if (day<=data.periodLength) return {name:"Period",key:"period"};
+      if (day===ov) return {name:"Ovulation",key:"ovulation"};
+      if (day>=ov-2 && day<=ov+2) return {name:"Fertile",key:"fertile"};
+      if (day<ov-2) return {name:"Follicular",key:"follicular"};
+      if (day<=data.cycleLength) return {name:"Luteal",key:"luteal"};
+      return {name:"Late",key:"late"};
+    }
+    function getPredictions() {
+      const last = getLastPeriod(); if (!last) return null;
+      return {
+        next: addDays(last, data.cycleLength),
+        fertileStart: addDays(last, data.cycleLength-16),
+        fertileEnd: addDays(last, data.cycleLength-12),
+        ovulation: addDays(last, data.cycleLength-14)
+      };
+    }
+
+    const PHASE_TIPS = {
+      period:"Heat pack, water, and zero guilt about resting.",
+      follicular:"Energy tends to climb now. Good time to start things.",
+      fertile:"Your fertile window is open.",
+      ovulation:"Peak of the cycle. Many people feel most social today.",
+      luteal:"Slow down a little. Comfort food and early nights are valid.",
+      late:"Cycles shift with stress and sleep. Log it when it arrives."
+    };
+    function updateStatus() {
+      const day = getCurrentCycleDay();
+      const phase = getPhase(day);
+      const preds = getPredictions();
+      const L = data.cycleLength;
+      document.getElementById("hero").dataset.phase = phase.key || "none";
+      document.getElementById("cycleDay").textContent = day||"–";
+      document.getElementById("phaseName").textContent = phase.name;
+      document.getElementById("ringArc").style.strokeDashoffset = day ? 527.8*(1-Math.min(day,L)/L) : 527.8;
+      document.getElementById("phaseTip").textContent = day ? PHASE_TIPS[phase.key] : "Log the first day of your last period and everything fills in.";
+      const box = document.getElementById("predictionBox");
+      const cd = document.getElementById("countdown");
+      if (preds) {
+        const t = new Date(); t.setHours(0,0,0,0);
+        const n = daysBetween(t,preds.next);
+        cd.textContent = n>1 ? `Next period in ${n} days` : n===1 ? "Next period tomorrow" : n===0 ? "Period expected today" : `Period is ${-n} day${n===-1?"":"s"} late`;
+        document.getElementById("nextPeriod").textContent = formatDisplay(preds.next);
+        document.getElementById("fertileWindow").textContent = formatDisplay(preds.fertileStart)+" – "+formatDisplay(preds.fertileEnd);
+        box.style.display="grid";
+      } else { cd.textContent=""; box.style.display="none"; }
+      const msgs = ["You’re doing great today 💕","Be gentle with yourself","Rest is productive too","You’ve got this, Nifemi","One day at a time 🌸","Your body is working hard"];
+      document.getElementById("funMessage").textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    }
+
+    function renderHistory() {
+      const list = document.getElementById("historyList");
+      if (!data.periods.length) { list.innerHTML='<li class="empty-state">No periods logged yet</li>'; return; }
+      list.innerHTML = [...data.periods].sort().reverse().map(d=>`
+        <li><span>${formatDisplay(parseDate(d))}</span>
+        <button class="delete-btn" onclick="deletePeriod('${d}')">Remove</button></li>`).join("");
+    }
+
+    function renderCalendar() {
+      const cal = document.getElementById("calendar");
+      const title = document.getElementById("monthTitle");
+      const first = new Date(viewYear,viewMonth,1);
+      const lastDay = new Date(viewYear,viewMonth+1,0).getDate();
+      const startDow = first.getDay();
+      title.textContent = first.toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+      let html = ["S","M","T","W","T","F","S"].map(d=>`<div class="cal-header">${d}</div>`).join("");
+      for (let i=0;i<startDow;i++) html += `<div class="cal-day empty"></div>`;
+      const todayStr = formatDate(new Date());
+      const preds = getPredictions();
+      const periodDays=new Set(), fertileDays=new Set(), ovulationDays=new Set(), predictedDays=new Set();
+      data.periods.forEach(p=>{ const s=parseDate(p); for(let i=0;i<data.periodLength;i++) periodDays.add(formatDate(addDays(s,i))); });
+      if (preds) {
+        for(let i=0;i<data.periodLength;i++) predictedDays.add(formatDate(addDays(preds.next,i)));
+        for(let d=preds.fertileStart;d<=preds.fertileEnd;d=addDays(d,1)) fertileDays.add(formatDate(d));
+        ovulationDays.add(formatDate(preds.ovulation));
+      }
+      for (let day=1;day<=lastDay;day++) {
+        const str = formatDate(new Date(viewYear,viewMonth,day));
+        let cls="cal-day";
+        if (str===todayStr) cls+=" today";
+        if (periodDays.has(str)) cls+=" period";
+        else if (ovulationDays.has(str)) cls+=" ovulation";
+        else if (fertileDays.has(str)) cls+=" fertile";
+        else if (predictedDays.has(str)) cls+=" predicted";
+        html += `<div class="${cls}">${day}</div>`;
+      }
+      cal.innerHTML = html;
+    }
+
+    function changeMonth(d) {
+      viewMonth+=d;
+      if (viewMonth<0){viewMonth=11;viewYear--;}
+      else if(viewMonth>11){viewMonth=0;viewYear++;}
+      renderCalendar();
+    }
+
+    function addPeriod() {
+      const val = document.getElementById("periodDate").value;
+      if (!val) return toast("Pick a date first");
+      if (data.periods.includes(val)) return toast("That date is already logged");
+      data.periods.push(val); data.periods.sort(); saveData(data);
+      document.getElementById("periodDate").value=formatDate(new Date()); refreshAll(); toast("Period start logged");
+    }
+    async function deletePeriod(d) {
+      if (!(await ask("Remove this period from your history?","Remove"))) return;
+      data.periods = data.periods.filter(x=>x!==d); saveData(data); refreshAll();
+    }
+    function saveSettings() {
+      const cl=+document.getElementById("cycleLength").value, pl=+document.getElementById("periodLength").value;
+      if (cl<20||cl>45||pl<2||pl>10) return toast("Cycle: 20–45 days. Period: 2–10 days.");
+      data.cycleLength=cl; data.periodLength=pl; saveData(data); refreshAll(); toast("Saved");
+    }
+    function saveNotes() {
+      data.notes = document.getElementById("notes").value; saveData(data); toast("Saved");
+    }
+    function refreshAll() { updateStatus(); renderHistory(); renderCalendar(); }
+
+    function showPage(name, btn) {
+      window.scrollTo(0,0);
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      const page = document.getElementById("page-" + name);
+      if (page) page.classList.add("active");
+      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      else {
+        const match = document.querySelector(`.nav-item[data-page="${name}"]`);
+        if (match) match.classList.add("active");
+      }
+      const footer = document.getElementById("mainFooter");
+      if (footer) footer.style.display = name === "cycle" ? "block" : "none";
+    }
+
+    function openGame(name) {
+      if (document.querySelector(".game-screen.active") || Date.now()-lastClose<450) return;
+      const screen = document.getElementById("game-" + name);
+      if (!screen) {
+        console.error("Game screen not found:", name);
+        return;
+      }
+      screen.classList.add("active");
+      const starters = {
+        bubbles: startBubbles,
+        memory: startMemory,
+        breathe: resetBreath,
+        whack: startWhack,
+        simon: startSimon,
+        reaction: function(){},
+        catch: startCatch,
+        puzzle: startPuzzle,
+        sequence: startSequence,
+        snake: startSnake, g2048: start2048, flap: startFlap, color: startColor, ttt: startTTT,
+        stress: function(){ document.getElementById("stressCount").textContent = 0; stressCount = 0; }
+      };
+      if (starters[name]) {
+        try { starters[name](); } catch(e) { console.error("Game start error:", e); }
+      }
+    }
+    let lastClose=0;
+    function closeGame() {
+      lastClose=Date.now(); stopSnake(); stopFlap(); stopColor();
+      document.querySelectorAll(".game-screen").forEach(g => g.classList.remove("active"));
+      stopBubbles(); stopWhack(); stopCatch(); stopBreath(); stopSimon();
+    }
+
+    // ===== 1. BUBBLE POP =====
+    let bubbleAnim=null, bubbles=[], bubbleScore=0;
+    function startBubbles() {
+      const canvas=document.getElementById("bubbleCanvas"), ctx=canvas.getContext("2d");
+      bubbleScore=0; document.getElementById("bubbleScore").textContent=0; bubbles=[];
+      function spawn(){ const r=16+Math.random()*26; bubbles.push({x:r+Math.random()*(canvas.width-r*2),y:canvas.height+r,r,speed:1.3+Math.random()*2.4,color:`hsl(${320+Math.random()*40},85%,${60+Math.random()*15}%)`}); }
+      for(let i=0;i<7;i++) spawn();
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        bubbles.forEach((b,i)=>{
+          b.y-=b.speed;
+          ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fillStyle=b.color; ctx.globalAlpha=0.9; ctx.fill();
+          ctx.beginPath(); ctx.arc(b.x-b.r*0.3,b.y-b.r*0.3,b.r*0.22,0,Math.PI*2); ctx.fillStyle="rgba(255,255,255,0.45)"; ctx.fill(); ctx.globalAlpha=1;
+          if(b.y+b.r<0){bubbles.splice(i,1);spawn();}
+        });
+        bubbleAnim=requestAnimationFrame(draw);
+      }
+      draw();
+      function tap(x,y){ for(let i=bubbles.length-1;i>=0;i--){const b=bubbles[i];if((x-b.x)**2+(y-b.y)**2<b.r**2){bubbles.splice(i,1);bubbleScore++;document.getElementById("bubbleScore").textContent=bubbleScore;spawn();break;}} }
+      canvas.onclick=e=>{const r=canvas.getBoundingClientRect();tap((e.clientX-r.left)*(canvas.width/r.width),(e.clientY-r.top)*(canvas.height/r.height));};
+      canvas.ontouchstart=e=>{e.preventDefault();const t=e.touches[0],r=canvas.getBoundingClientRect();tap((t.clientX-r.left)*(canvas.width/r.width),(t.clientY-r.top)*(canvas.height/r.height));};
+    }
+    function stopBubbles(){ if(bubbleAnim) cancelAnimationFrame(bubbleAnim); bubbleAnim=null; }
+
+    // ===== 2. MEMORY =====
+    const memIcons=["🌸","💕","🌙","⭐","🦋","🌈","🍀","🎀"];
+    let flipped=[], matched=0, moves=0, lock=false;
+    function startMemory(){
+      matched=0; moves=0; flipped=[]; lock=false;
+      document.getElementById("memoryMoves").textContent=0;
+      const icons=[...memIcons,...memIcons];
+      for(let i=icons.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[icons[i],icons[j]]=[icons[j],icons[i]];}
+      const grid=document.getElementById("memoryGrid"); grid.innerHTML="";
+      icons.forEach(icon=>{
+        const el=document.createElement("div"); el.className="memory-card"; el.dataset.icon=icon; el.textContent="";
+        el.onclick=()=>flipCard(el); grid.appendChild(el);
+      });
+    }
+    function flipCard(el){
+      if(lock||el.classList.contains("flipped")||el.classList.contains("matched")) return;
+      el.classList.add("flipped"); el.textContent=el.dataset.icon; flipped.push(el);
+      if(flipped.length===2){
+        moves++; document.getElementById("memoryMoves").textContent=moves; lock=true;
+        const [a,b]=flipped;
+        if(a.dataset.icon===b.dataset.icon){ a.classList.add("matched"); b.classList.add("matched"); matched+=2; flipped=[]; lock=false; if(matched===16) setTimeout(()=>toast("You won! 🎉 "+moves+" moves"),300); }
+        else setTimeout(()=>{a.classList.remove("flipped");b.classList.remove("flipped");a.textContent="";b.textContent="";flipped=[];lock=false;},600);
+      }
+    }
+
+    // ===== 3. BREATHE =====
+    let breathInterval=null, breathing=false;
+    function resetBreath(){ stopBreath(); document.getElementById("breathCircle").classList.remove("inhale"); document.getElementById("breathCircle").textContent="Breathe"; document.getElementById("breathText").textContent="Tap Start when ready"; document.getElementById("breathBtn").textContent="Start"; breathing=false; }
+    function toggleBreath(){
+      if(breathing){ stopBreath(); document.getElementById("breathBtn").textContent="Start"; document.getElementById("breathText").textContent="Paused"; breathing=false; }
+      else { startBreathCycle(); document.getElementById("breathBtn").textContent="Pause"; breathing=true; }
+    }
+    function startBreathCycle(){
+      const circle=document.getElementById("breathCircle"), text=document.getElementById("breathText");
+      let phase=0;
+      function cycle(){
+        if(phase===0){ circle.classList.add("inhale"); circle.textContent="Inhale"; text.textContent="Breathe in slowly…"; phase=1; }
+        else if(phase===1){ circle.textContent="Hold"; text.textContent="Hold gently…"; phase=2; }
+        else { circle.classList.remove("inhale"); circle.textContent="Exhale"; text.textContent="Breathe out slowly…"; phase=0; }
+      }
+      cycle(); breathInterval=setInterval(cycle,4000);
+    }
+    function stopBreath(){ if(breathInterval) clearInterval(breathInterval); breathInterval=null; document.getElementById("breathCircle").classList.remove("inhale"); }
+
+    // ===== 4. HEART WHACK =====
+    let whackTimer=null, whackScore=0, whackTime=30, whackActive=null;
+    function startWhack(){
+      stopWhack(); whackScore=0; whackTime=30;
+      document.getElementById("whackScore").textContent=0;
+      document.getElementById("whackTime").textContent=30;
+      const grid=document.getElementById("whackGrid"); grid.innerHTML="";
+      for(let i=0;i<9;i++){ const h=document.createElement("div"); h.className="whack-hole"; h.dataset.i=i; h.onclick=()=>hitWhack(h); grid.appendChild(h); }
+      whackTimer=setInterval(()=>{
+        whackTime--; document.getElementById("whackTime").textContent=whackTime;
+        if(whackTime<=0){ stopWhack(); toast("Time’s up! Score "+whackScore); return; }
+        // spawn
+        document.querySelectorAll(".whack-hole").forEach(h=>{h.classList.remove("active");h.textContent="";});
+        const holes=[...document.querySelectorAll(".whack-hole")];
+        const pick=holes[Math.floor(Math.random()*holes.length)];
+        pick.classList.add("active"); pick.textContent="💖";
+        whackActive=pick;
+      },800);
+    }
+    function hitWhack(h){ if(h.classList.contains("active")){ whackScore++; document.getElementById("whackScore").textContent=whackScore; h.classList.remove("active"); h.textContent=""; } }
+    function stopWhack(){ if(whackTimer) clearInterval(whackTimer); whackTimer=null; }
+
+    // ===== 5. SIMON =====
+    let simonSeq=[], simonPlayer=[], simonLevel=1, simonPlaying=false, simonTimeouts=[];
+    function startSimon(){
+      stopSimon(); simonSeq=[]; simonPlayer=[]; simonLevel=1;
+      document.getElementById("simonLevel").textContent=1;
+      document.getElementById("simonMsg").textContent="Watch the pattern…";
+      document.querySelectorAll(".simon-btn").forEach(b=>{
+        b.onclick=()=>simonTap(+b.dataset.i);
+      });
+      setTimeout(simonNext,600);
+    }
+    function simonNext(){
+      simonPlayer=[]; simonPlaying=false;
+      simonSeq.push(Math.floor(Math.random()*4));
+      document.getElementById("simonLevel").textContent=simonSeq.length;
+      document.getElementById("simonMsg").textContent="Watch…";
+      let i=0;
+      function flash(){
+        if(i>=simonSeq.length){ simonPlaying=true; document.getElementById("simonMsg").textContent="Your turn!"; return; }
+        const btn=document.querySelector(`.simon-btn[data-i="${simonSeq[i]}"]`);
+        btn.classList.add("active");
+        const t=setTimeout(()=>{ btn.classList.remove("active"); i++; const t2=setTimeout(flash,250); simonTimeouts.push(t2); },450);
+        simonTimeouts.push(t);
+      }
+      flash();
+    }
+    function simonTap(i){
+      if(!simonPlaying) return;
+      const btn=document.querySelector(`.simon-btn[data-i="${i}"]`);
+      btn.classList.add("active"); setTimeout(()=>btn.classList.remove("active"),200);
+      simonPlayer.push(i);
+      const idx=simonPlayer.length-1;
+      if(simonPlayer[idx]!==simonSeq[idx]){ document.getElementById("simonMsg").textContent="Wrong! Score: "+(simonSeq.length-1); simonPlaying=false; return; }
+      if(simonPlayer.length===simonSeq.length){ document.getElementById("simonMsg").textContent="Nice!"; setTimeout(simonNext,700); }
+    }
+    function stopSimon(){ simonTimeouts.forEach(clearTimeout); simonTimeouts=[]; simonPlaying=false; }
+
+    // ===== 6. REACTION =====
+    let reactionStart=0, reactionBest=null, reactionWaiting=false;
+    function startReaction(){
+      const target=document.getElementById("reactionTarget");
+      const msg=document.getElementById("reactionMsg");
+      const body=document.getElementById("reactionBody");
+      target.style.display="none";
+      msg.textContent="Wait for the circle…";
+      reactionWaiting=true;
+      const delay=1000+Math.random()*2500;
+      setTimeout(()=>{
+        if(!reactionWaiting) return;
+        const maxX=body.clientWidth-120, maxY=body.clientHeight-120;
+        target.style.left=(20+Math.random()*Math.max(0,maxX-40))+"px";
+        target.style.top=(40+Math.random()*Math.max(0,maxY-60))+"px";
+        target.style.display="block";
+        reactionStart=performance.now();
+        target.onclick=()=>{
+          const ms=Math.round(performance.now()-reactionStart);
+          target.style.display="none";
+          reactionWaiting=false;
+          msg.textContent=`${ms} ms`;
+          if(reactionBest===null||ms<reactionBest){ reactionBest=ms; document.getElementById("reactionBest").textContent=ms; }
+        };
+      },delay);
+    }
+
+    // ===== 7. STAR CATCH =====
+    let catchAnim=null, catchScore=0, stars=[], basket={x:150,w:70};
+    function startCatch(){
+      stopCatch(); const canvas=document.getElementById("catchCanvas"), ctx=canvas.getContext("2d");
+      catchScore=0; document.getElementById("catchScore").textContent=0; stars=[]; basket.x=canvas.width/2-35;
+      function spawn(){ stars.push({x:20+Math.random()*(canvas.width-40),y:-20,speed:2+Math.random()*2.5,r:10+Math.random()*6}); }
+      for(let i=0;i<3;i++) spawn();
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        // basket
+        ctx.fillStyle=varPink(); ctx.fillRect(basket.x,canvas.height-28,basket.w,18);
+        ctx.beginPath(); ctx.arc(basket.x+basket.w/2,canvas.height-28,8,0,Math.PI*2); ctx.fill();
+        stars.forEach((s,i)=>{
+          s.y+=s.speed;
+          ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle="#ffd06b"; ctx.fill();
+          if(s.y>canvas.height-30 && s.x>basket.x && s.x<basket.x+basket.w){ stars.splice(i,1); catchScore++; document.getElementById("catchScore").textContent=catchScore; spawn(); }
+          else if(s.y>canvas.height+20){ stars.splice(i,1); spawn(); }
+        });
+        catchAnim=requestAnimationFrame(draw);
+      }
+      draw();
+      function move(x){ const r=canvas.getBoundingClientRect(); basket.x=Math.max(0,Math.min(canvas.width-basket.w,(x-r.left)*(canvas.width/r.width)-basket.w/2)); }
+      canvas.onmousemove=e=>move(e.clientX);
+      canvas.ontouchmove=e=>{e.preventDefault();move(e.touches[0].clientX);};
+    }
+    function varPink(){ return getComputedStyle(document.documentElement).getPropertyValue("--pink").trim()||"#ff6b9d"; }
+    function stopCatch(){ if(catchAnim) cancelAnimationFrame(catchAnim); catchAnim=null; }
+
+    // ===== 8. SLIDE PUZZLE =====
+    let puzzle=[], puzzleMoves=0, emptyPos=8;
+    function startPuzzle(){
+      puzzle=[1,2,3,4,5,6,7,8,0];
+      // shuffle
+      for(let i=0;i<80;i++){ const dirs=[-1,1,-3,3]; const d=dirs[Math.floor(Math.random()*4)]; const np=emptyPos+d; if(np>=0&&np<9&&Math.abs((emptyPos%3)-(np%3))<=1){ puzzle[emptyPos]=puzzle[np]; puzzle[np]=0; emptyPos=np; } }
+      puzzleMoves=0; document.getElementById("puzzleMoves").textContent=0;
+      renderPuzzle();
+    }
+    function renderPuzzle(){
+      const grid=document.getElementById("puzzleGrid"); grid.innerHTML="";
+      puzzle.forEach((n,i)=>{
+        const t=document.createElement("div"); t.className="puzzle-tile"+(n===0?" empty":""); t.textContent=n||"";
+        t.onclick=()=>movePuzzle(i); grid.appendChild(t);
+      });
+    }
+    function movePuzzle(i){
+      const dist=Math.abs(i-emptyPos);
+      if(dist===1&&Math.floor(i/3)===Math.floor(emptyPos/3) || dist===3){
+        puzzle[emptyPos]=puzzle[i]; puzzle[i]=0; emptyPos=i; puzzleMoves++; document.getElementById("puzzleMoves").textContent=puzzleMoves; renderPuzzle();
+        if(puzzle.slice(0,8).every((v,idx)=>v===idx+1)) setTimeout(()=>toast("Solved! 🎉 "+puzzleMoves+" moves"),200);
+      }
+    }
+
+    // ===== 9. SEQUENCE =====
+    let seq=[], seqLevel=1, seqInput=[], seqShowing=false;
+    function startSequence(){
+      seq=[]; seqLevel=1; seqInput=[]; document.getElementById("seqLevel").textContent=1;
+      document.getElementById("seqDisplay").textContent=""; document.getElementById("seqMsg").textContent="Get ready…";
+      const input=document.getElementById("seqInput"); input.innerHTML="";
+      for(let i=1;i<=9;i++){ const b=document.createElement("button"); b.className="seq-btn"; b.textContent=i; b.onclick=()=>seqTap(i); input.appendChild(b); }
+      setTimeout(seqNext,800);
+    }
+    function seqNext(){
+      seqInput=[]; seqShowing=true;
+      seq.push(1+Math.floor(Math.random()*9));
+      document.getElementById("seqLevel").textContent=seq.length;
+      let i=0; document.getElementById("seqDisplay").textContent="";
+      function show(){
+        if(i>=seq.length){ seqShowing=false; document.getElementById("seqMsg").textContent="Now repeat the sequence"; document.getElementById("seqDisplay").textContent=""; return; }
+        document.getElementById("seqDisplay").textContent=seq[i];
+        setTimeout(()=>{ document.getElementById("seqDisplay").textContent=""; setTimeout(()=>{i++;show();},300); },600);
+      }
+      document.getElementById("seqMsg").textContent="Memorize…"; show();
+    }
+    function seqTap(n){
+      if(seqShowing) return;
+      seqInput.push(n);
+      document.getElementById("seqDisplay").textContent=seqInput.join(" ");
+      if(seqInput[seqInput.length-1]!==seq[seqInput.length-1]){ document.getElementById("seqMsg").textContent="Wrong! Reached level "+(seq.length-1); return; }
+      if(seqInput.length===seq.length){ document.getElementById("seqMsg").textContent="Correct!"; setTimeout(seqNext,700); }
+    }
+
+    // ===== 10. STRESS BALL =====
+    let stressCount=0;
+    function squeezeBall(e){
+      e.preventDefault();
+      stressCount++; document.getElementById("stressCount").textContent=stressCount;
+      const ball=document.getElementById("stressBall");
+      ball.style.transform="scale(0.78)";
+      setTimeout(()=>ball.style.transform="",150);
+    }
+
+
+    const LS={get:k=>{try{return +localStorage.getItem(k)||0}catch(e){return 0}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+    const $=id=>document.getElementById(id);
+
+    // ===== 11. HEART SNAKE =====
+    let snakeT=null,snake=[],sdir={x:1,y:0},sndir={x:1,y:0},sfood={x:10,y:8},sscore=0,salive=false;
+    function startSnake(){
+      stopSnake(); const c=$("snakeCanvas");
+      snake=[{x:5,y:8},{x:4,y:8},{x:3,y:8}]; sdir={x:1,y:0}; sndir=sdir; sscore=0; salive=true;
+      $("snakeScore").textContent=0; $("snakeBest").textContent=LS.get("nc_snake"); $("snakeMsg").textContent="Swipe or use the arrows";
+      placeFood(); drawSnake(); snakeT=setInterval(stepSnake,150);
+      let sx=0,sy=0;
+      c.ontouchstart=e=>{e.preventDefault();sx=e.touches[0].clientX;sy=e.touches[0].clientY;};
+      c.ontouchmove=e=>{e.preventDefault();const t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+        if(Math.abs(dx)<18&&Math.abs(dy)<18)return;
+        if(Math.abs(dx)>Math.abs(dy))turnSnake(dx>0?1:-1,0);else turnSnake(0,dy>0?1:-1);
+        sx=t.clientX;sy=t.clientY;};
+    }
+    function turnSnake(x,y){ if(!salive||(x===-sdir.x&&y===-sdir.y))return; sndir={x,y}; }
+    function placeFood(){ do{sfood={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*16)};}while(snake.some(s=>s.x===sfood.x&&s.y===sfood.y)); }
+    function stepSnake(){
+      sdir=sndir; const h={x:snake[0].x+sdir.x,y:snake[0].y+sdir.y};
+      if(h.x<0||h.y<0||h.x>15||h.y>15||snake.some(s=>s.x===h.x&&s.y===h.y)){
+        salive=false; stopSnake(); if(sscore>LS.get("nc_snake")){LS.set("nc_snake",sscore);$("snakeBest").textContent=sscore;}
+        $("snakeMsg").textContent="Game over. Score "+sscore+". Tap New to go again."; return;
+      }
+      snake.unshift(h);
+      if(h.x===sfood.x&&h.y===sfood.y){ sscore++; $("snakeScore").textContent=sscore; placeFood();
+        clearInterval(snakeT); snakeT=setInterval(stepSnake,Math.max(70,150-sscore*4)); }
+      else snake.pop();
+      drawSnake();
+    }
+    function drawSnake(){
+      const c=$("snakeCanvas"),x=c.getContext("2d"); x.clearRect(0,0,320,320);
+      x.fillStyle="rgba(255,255,255,.035)"; for(let i=0;i<16;i++)for(let j=0;j<16;j++) if((i+j)%2) x.fillRect(i*20,j*20,20,20);
+      snake.forEach((s,i)=>{ x.fillStyle=i===0?"#ffc2d6":"#ff7ba9"; x.globalAlpha=i===0?1:Math.max(.45,1-i*.03); x.beginPath(); x.roundRect?x.roundRect(s.x*20+1,s.y*20+1,18,18,6):x.rect(s.x*20+1,s.y*20+1,18,18); x.fill(); });
+      x.globalAlpha=1; x.font="17px serif"; x.textAlign="center"; x.textBaseline="middle"; x.fillText("💗",sfood.x*20+10,sfood.y*20+11);
+    }
+    function stopSnake(){ if(snakeT) clearInterval(snakeT); snakeT=null; }
+
+    // ===== 12. 2048 =====
+    let g48=[],g48score=0,g48won=false;
+    const C48={2:"#ffe1ec",4:"#ffc2d6",8:"#ff9ec0",16:"#ff7ba9",32:"#ff5c93",64:"#e8467f",128:"#ffd27a",256:"#ffc04d",512:"#c3a6ff",1024:"#8fb7ff",2048:"#78e6aa"};
+    function start2048(){
+      g48=Array.from({length:4},()=>[0,0,0,0]); g48score=0; g48won=false;
+      add48(); add48(); draw48(); $("g2048Msg").textContent="Swipe to slide. Equal tiles merge.";
+      const b=$("g2048Board"); let sx=0,sy=0;
+      b.ontouchstart=e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;};
+      b.ontouchmove=e=>e.preventDefault();
+      b.ontouchend=e=>{const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy; if(Math.max(Math.abs(dx),Math.abs(dy))<24)return; move48(Math.abs(dx)>Math.abs(dy)?(dx>0?"R":"L"):(dy>0?"D":"U"));};
+    }
+    function add48(){ const e=[]; g48.forEach((r,i)=>r.forEach((v,j)=>{if(!v)e.push([i,j]);})); if(!e.length)return; const [i,j]=e[Math.floor(Math.random()*e.length)]; g48[i][j]=Math.random()<.9?2:4; }
+    function slide48(r){ const a=r.filter(x=>x); let s=0; for(let i=0;i<a.length-1;i++) if(a[i]===a[i+1]){a[i]*=2;s+=a[i];a.splice(i+1,1);} while(a.length<4)a.push(0); return [a,s]; }
+    function move48(d){
+      const old=JSON.stringify(g48);
+      for(let i=0;i<4;i++){
+        let line=(d==="L"||d==="R")?g48[i].slice():g48.map(r=>r[i]);
+        if(d==="R"||d==="D") line.reverse();
+        let [n,s]=slide48(line); g48score+=s;
+        if(d==="R"||d==="D") n.reverse();
+        if(d==="L"||d==="R") g48[i]=n; else n.forEach((v,k)=>{g48[k][i]=v;});
+      }
+      if(JSON.stringify(g48)===old) return;
+      add48(); draw48();
+      if(!g48won&&g48.some(r=>r.includes(2048))){ g48won=true; $("g2048Msg").textContent="You made 2048! 🎉 Keep going if you like."; }
+      else if(!can48()) $("g2048Msg").textContent="No moves left. Score "+g48score+". Tap New to retry.";
+    }
+    function can48(){ for(let i=0;i<4;i++)for(let j=0;j<4;j++){ if(!g48[i][j])return true; if(j<3&&g48[i][j]===g48[i][j+1])return true; if(i<3&&g48[i][j]===g48[i+1][j])return true; } return false; }
+    function draw48(){
+      $("g2048Board").innerHTML=g48.flat().map(v=>`<div class="t2048" style="${v?`background:${C48[v]||"#78e6aa"};font-size:${v>=1024?"1.05rem":v>=128?"1.2rem":"1.45rem"}`:""}">${v||""}</div>`).join("");
+      $("g2048Score").textContent=g48score; if(g48score>LS.get("nc_2048")) LS.set("nc_2048",g48score); $("g2048Best").textContent=LS.get("nc_2048");
+    }
+
+    // ===== 13. HEART FLAP =====
+    let flapAnim=null;
+    function startFlap(){
+      stopFlap(); const c=$("flapCanvas"),x=c.getContext("2d"),W=320,H=400,GAP=130,BX=80,R=14;
+      let y=190,v=0,pipes=[],score=0,over=false,started=false,dist=999,last=0,t=0;
+      $("flapScore").textContent=0; $("flapBest").textContent=LS.get("nc_flap"); $("flapMsg").textContent="Tap to flap";
+      function flap(e){ e.preventDefault(); if(over){startFlap();return;} started=true; v=-6.4; }
+      c.ontouchstart=flap; c.onmousedown=flap;
+      function loop(ts){
+        const dt=Math.min(2,(ts-(last||ts))/16.67); last=ts; t+=dt;
+        if(started&&!over){
+          v+=0.4*dt; y+=v*dt; dist+=2.4*dt;
+          if(dist>=190){ dist=0; pipes.push({x:W+10,top:50+Math.random()*(H-GAP-100),done:false}); }
+          pipes.forEach(p=>{
+            p.x-=2.4*dt;
+            if(!p.done&&p.x+50<BX){ p.done=true; score++; $("flapScore").textContent=score; }
+            if(BX+R>p.x&&BX-R<p.x+50&&(y-R<p.top||y+R>p.top+GAP)) over=true;
+          });
+          pipes=pipes.filter(p=>p.x>-60);
+          if(y+R>H||y-R<0) over=true;
+          if(over){ if(score>LS.get("nc_flap")){LS.set("nc_flap",score);$("flapBest").textContent=score;} $("flapMsg").textContent="Game over. Score "+score+". Tap to try again."; }
+        } else if(!started) y=190+Math.sin(t/12)*8;
+        x.clearRect(0,0,W,H);
+        pipes.forEach(p=>{ x.fillStyle="rgba(195,166,255,.28)"; x.strokeStyle="#c3a6ff"; x.lineWidth=2;
+          [[0,p.top],[p.top+GAP,H-p.top-GAP]].forEach(([py,ph])=>{ x.beginPath(); x.roundRect?x.roundRect(p.x,py,50,ph,10):x.rect(p.x,py,50,ph); x.fill(); x.stroke(); }); });
+        x.save(); x.translate(BX,y); x.rotate(Math.max(-.5,Math.min(.8,v*.07))); x.font="30px serif"; x.textAlign="center"; x.textBaseline="middle"; x.fillText("💗",0,2); x.restore();
+        flapAnim=requestAnimationFrame(loop);
+      }
+      flapAnim=requestAnimationFrame(loop);
+    }
+    function stopFlap(){ if(flapAnim) cancelAnimationFrame(flapAnim); flapAnim=null; }
+
+    // ===== 14. COLOR CLASH =====
+    const CW=[["Pink","#ff7ba9"],["Blue","#8fb7ff"],["Green","#78e6aa"],["Gold","#ffd27a"],["Lilac","#c3a6ff"]];
+    let colT=null,colScore=0,colTime=30,colMatch=false;
+    function startColor(){
+      stopColor(); colScore=0; colTime=30; $("colorScore").textContent=0; $("colorTime").textContent=30;
+      $("colorMsg").textContent="Does the word match the color it’s written in?"; nextColor();
+      colT=setInterval(()=>{ colTime--; $("colorTime").textContent=colTime;
+        if(colTime<=0){ stopColor(); const b=LS.get("nc_color"); if(colScore>b)LS.set("nc_color",colScore);
+          $("colorWord").textContent="Done"; $("colorWord").style.color="var(--white)"; $("colorMsg").textContent="Time’s up! Score "+colScore+" · Best "+Math.max(b,colScore); } },1000);
+    }
+    function nextColor(){ const w=CW[Math.floor(Math.random()*5)], i=Math.random()<.5?w:CW[Math.floor(Math.random()*5)]; const el=$("colorWord"); el.textContent=w[0]; el.style.color=i[1]; colMatch=(w===i); }
+    function answerColor(yes){ if(!colT)return; if(yes===colMatch) colScore++; else colScore=Math.max(0,colScore-1); $("colorScore").textContent=colScore; nextColor(); }
+    function stopColor(){ if(colT) clearInterval(colT); colT=null; }
+
+    // ===== 15. TIC-TAC-TOE =====
+    let tb=[],tdone=false,tw=0,tl=0,td=0;
+    const TL=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    function tline(b){ for(const l of TL) if(b[l[0]]&&b[l[0]]===b[l[1]]&&b[l[0]]===b[l[2]]) return l; return null; }
+    function mm(b,p){ const l=tline(b); if(l) return b[l[0]]==="O"?1:-1; if(b.every(Boolean)) return 0;
+      let best=p==="O"?-2:2; for(let i=0;i<9;i++) if(!b[i]){ b[i]=p; const s=mm(b,p==="O"?"X":"O"); b[i]=""; best=p==="O"?Math.max(best,s):Math.min(best,s); } return best; }
+    function startTTT(){ tb=Array(9).fill(""); tdone=false; $("tttMsg").textContent="You are ❌. Your move."; drawTTT(); }
+    function drawTTT(win){
+      $("tttGrid").innerHTML=""; tb.forEach((v,i)=>{ const b=document.createElement("button"); b.className="ttt-cell"+(win&&win.includes(i)?" win":""); b.textContent=v==="X"?"❌":v==="O"?"⭕":""; b.onclick=()=>playTTT(i); $("tttGrid").appendChild(b); });
+      $("tttW").textContent=tw; $("tttL").textContent=tl; $("tttD").textContent=td;
+    }
+    function endTTT(){ const l=tline(tb); if(l){ tdone=true; if(tb[l[0]]==="X"){tw++;$("tttMsg").textContent="You win! 🎉";} else {tl++;$("tttMsg").textContent="The bot got you this time.";} drawTTT(l); return true; }
+      if(tb.every(Boolean)){ tdone=true; td++; $("tttMsg").textContent="Draw."; drawTTT(); return true; } return false; }
+    function playTTT(i){
+      if(tdone||tb[i]) return; tb[i]="X"; drawTTT(); if(endTTT()) return;
+      setTimeout(()=>{
+        const free=tb.map((v,k)=>v?-1:k).filter(k=>k>=0); let pick;
+        if(Math.random()<.3) pick=free[Math.floor(Math.random()*free.length)];
+        else { let best=-3; free.forEach(k=>{ tb[k]="O"; const s=mm(tb,"X"); tb[k]=""; if(s>best){best=s;pick=k;} }); }
+        tb[pick]="O"; drawTTT(); if(!endTTT()) $("tttMsg").textContent="Your move.";
+      },300);
+    }
+
+    // INIT
+    function init(){
+      document.getElementById("cycleLength").value = data.cycleLength;
+      document.getElementById("periodLength").value = data.periodLength;
+      document.getElementById("notes").value = data.notes || "";
+      document.getElementById("periodDate").value = formatDate(new Date());
+      const now = new Date();
+      viewYear = now.getFullYear();
+      viewMonth = now.getMonth();
+      refreshAll();
+
+      // Reliable taps for iPhone (prevents double-firing)
+      function makeTappable(el, handler) {
+        let sx=0, sy=0, moved=false, t0=0, last=0;
+        function fire(){ const n=Date.now(); if(n-last<600) return; last=n; handler(); }
+        el.addEventListener("touchstart", function(e){ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; moved=false; t0=Date.now(); }, {passive:true});
+        el.addEventListener("touchmove", function(e){ const t=e.touches[0]; if(Math.abs(t.clientX-sx)>8||Math.abs(t.clientY-sy)>8) moved=true; }, {passive:true});
+        el.addEventListener("touchend", function(e){ if(moved||Date.now()-t0>500) return; e.preventDefault(); fire(); }, {passive:false});
+        el.addEventListener("click", fire);
+      }
+
+      document.querySelectorAll(".game-card").forEach(card => {
+        makeTappable(card, function() {
+          const name = card.getAttribute("data-game");
+          if (name) openGame(name);
+        });
+      });
+
+      document.querySelectorAll(".nav-item").forEach(btn => {
+        makeTappable(btn, function() {
+          const name = btn.getAttribute("data-page");
+          if (name) showPage(name, btn);
+        });
+      });
+    }
+    init();
+
+    function ask(msg,yes){ return new Promise(res=>{ const d=$("dlg"); $("dlgText").textContent=msg; $("dlgYes").textContent=yes||"OK"; d.classList.add("show");
+      const done=v=>{ d.classList.remove("show"); res(v); }; $("dlgYes").onclick=()=>done(true); $("dlgNo").onclick=()=>done(false); }); }
+    // ===== PASSCODE LOCK =====
+    const PIN_KEY="nc_pin";
+    function hashPin(p){ let h=5381; const s="nc|"+p+"|nifemi"; for(let i=0;i<s.length;i++) h=((h<<5)+h+s.charCodeAt(i))|0; return String(h); }
+    function getPin(){ try{return localStorage.getItem(PIN_KEY);}catch(e){return null;} }
+    let lockMode="unlock", lockBuf="", lockFirst="", awayAt=0;
+    function buildKeypad(){
+      const kp=$("keypad"); kp.innerHTML="";
+      ["1","2","3","4","5","6","7","8","9","","0","⌫"].forEach(k=>{
+        const b=document.createElement("button"); b.textContent=k; if(!k) b.className="blank"; else b.onclick=()=>pressKey(k); kp.appendChild(b);
+      });
+    }
+    function lockRender(msg){
+      const t={unlock:"Enter your passcode",new:"Create a passcode",confirm:"Confirm your passcode"};
+      $("lockTitle").textContent=t[lockMode]; $("lockMsg").textContent=msg||"";
+      $("lockDots").querySelectorAll("i").forEach((d,i)=>d.classList.toggle("on",i<lockBuf.length));
+      $("lockLink").textContent=lockMode==="unlock"?"Forgot passcode?":"Cancel";
+    }
+    function showLock(mode){ lockMode=mode; lockBuf=""; lockFirst=""; $("lock").classList.add("show"); lockRender(mode==="new"?"4 digits you’ll remember":""); }
+    function hideLock(){ $("lock").classList.remove("show"); document.documentElement.classList.remove("haspin"); lockBuf=""; }
+    function pressKey(k){
+      if(k==="⌫") lockBuf=lockBuf.slice(0,-1); else if(lockBuf.length<4) lockBuf+=k;
+      lockRender($("lockMsg").textContent);
+      if(lockBuf.length===4) setTimeout(lockSubmit,140);
+    }
+    function lockFail(m){ const d=$("lockDots"); d.classList.remove("shake"); void d.offsetWidth; d.classList.add("shake"); lockBuf=""; lockRender(m); }
+    function lockSubmit(){
+      if(lockMode==="unlock"){
+        if(hashPin(lockBuf)===getPin()) hideLock(); else lockFail("Wrong passcode, try again");
+      } else if(lockMode==="new"){ lockFirst=lockBuf; lockBuf=""; lockMode="confirm"; lockRender("Enter it once more"); }
+      else {
+        if(lockBuf===lockFirst){ try{localStorage.setItem(PIN_KEY,hashPin(lockBuf));}catch(e){} hideLock(); updatePinUI(); toast("Passcode is on"); }
+        else { lockMode="new"; lockFirst=""; lockFail("Those didn’t match. Start again."); }
+      }
+    }
+    async function lockSecondary(){
+      if(lockMode!=="unlock"){ hideLock(); return; }
+      if(await ask("Forgot your passcode?\n\nThe only way back in is to erase everything in this app (periods, notes, settings). Erase and start fresh?","Erase everything")){
+        try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(PIN_KEY); }catch(e){} location.reload();
+      }
+    }
+    function startSetPin(){ showLock("new"); }
+    async function removePin(){ if(await ask("Remove your passcode?","Remove")){ try{localStorage.removeItem(PIN_KEY);}catch(e){} updatePinUI(); toast("Passcode removed"); } }
+    function updatePinUI(){
+      const on=!!getPin();
+      $("pinStatus").textContent=on?"Passcode is on. The app locks again when you leave it for a bit. This keeps people out of the app, it isn’t encryption.":"Add a 4-digit passcode so only you can open the app.";
+      $("pinSetBtn").textContent=on?"Change":"Set passcode";
+      $("pinLockBtn").style.display=on?"":"none"; $("pinRemoveBtn").style.display=on?"":"none";
+    }
+    document.addEventListener("visibilitychange",()=>{
+      if(document.hidden) awayAt=Date.now();
+      else if(getPin() && awayAt && Date.now()-awayAt>30000 && !$("lock").classList.contains("show")) showLock("unlock");
+    });
+    document.addEventListener("keydown",e=>{
+      if(!$("lock").classList.contains("show")&&!document.documentElement.classList.contains("haspin")) return;
+      if(/^\d$/.test(e.key)) pressKey(e.key); else if(e.key==="Backspace") pressKey("⌫");
+    });
+
+    // ===== MRS A (built-in helper) =====
+    const R=a=>a[Math.floor(Math.random()*a.length)];
+    function cyc(){ const day=getCurrentCycleDay(), ph=getPhase(day), pr=getPredictions(); const t=new Date(); t.setHours(0,0,0,0); return {day,ph,pr,n:pr?daysBetween(t,pr.next):null}; }
+    const NODATA="I don’t have a period logged yet. Tap “Period started today” on the Cycle tab and I can work out where you are.";
+    const goCycle=["Open Cycle",()=>showPage("cycle")], goGames=["Open Games",()=>showPage("games")], goNotes=["Open Notes",()=>showPage("notes")];
+    const INTENTS=[
+      [/suicid|kill myself|want to die|end my life|self.?harm|hurt myself/, ()=>({t:"I’m really glad you told me, and I’m sorry it feels this heavy. You deserve real support right now. Please reach out to someone you trust, or call your local emergency number, and tell them how you’re feeling. You don’t have to carry this alone. 💕"})],
+      [/^(hi|hello|hey|yo|sup|good (morning|afternoon|evening))\b/, ()=>({t:R(["Hi Nifemi! 🌸 I’m Mrs A. Ask me about your cycle, how you’re feeling, or just chat.","Hey you! How are you feeling today?"])})],
+      [/thank|thanks|thx/, ()=>({t:R(["Anytime 💕","You’re welcome! I’m here whenever you need me."])})],
+      [/who are you|your name|what are you|are you (a )?(real|human|bot)/, ()=>({t:"I’m Mrs A, the helper built into this app. I’m not a person or a doctor. I answer from your cycle info and common questions, and for anything worrying a doctor is the right call."})],
+      [/how are you|how.s it going/, ()=>({t:"I’m good, thanks for asking! More importantly, how are you feeling today?"})],
+      [/love you|miss you|you.re (so )?(nice|sweet|the best|amazing)/, ()=>({t:"Aww 💕 I was built with a lot of love for you."})],
+      [/joke|funny|make me laugh/, ()=>({t:R(["Why did the cookie go to the doctor? Because it felt crummy. 🍪","I told my phone I needed space. It opened a new tab. 😅","Why don’t eggs tell jokes? They’d crack each other up. 🥚"])})],
+      [/cheer|motivat|encourag|feel (bad|down|low)|lonely|stress/, ()=>({t:R(["You’re doing better than you think. Rest if you need to, nobody is grading you today. 🌸","Be as kind to yourself as you would be to your best friend. You deserve that.","Hard days pass, and you’ve gotten through every one so far. Proud of you. 💕"]),a:goGames})],
+      [/bored|play|game|distract/, ()=>({t:"Try Heart Snake, 2048 or Tic-Tac-Toe. Want me to open the games?",a:goGames})],
+      [/(what|which).*(day|phase)|where am i|cycle day/, ()=>{const c=cyc(); return c.day?{t:`You’re on day ${c.day} of your cycle, in the ${c.ph.name.toLowerCase()} phase. ${PHASE_TIPS[c.ph.key]}`}:{t:NODATA,a:goCycle};}],
+      [/next period|when.*(period|come|due|start)|period.*(when|due)/, ()=>{const c=cyc(); if(!c.pr) return {t:NODATA,a:goCycle}; const d=formatDisplay(c.pr.next); return {t:c.n>0?`Your next period is expected around ${d}, in ${c.n} day${c.n===1?"":"s"}. It’s an estimate based on your usual cycle length.`:c.n===0?"It’s expected today, so maybe keep supplies close. 💕":`It was expected ${-c.n} day${c.n===-1?"":"s"} ago (${d}). Cycles can run late, so see the tip about late periods if you’d like.`};}],
+      [/fertile|ovulat/, ()=>{const c=cyc(); if(!c.pr) return {t:NODATA,a:goCycle}; return {t:`Your estimated fertile window is ${formatDisplay(c.pr.fertileStart)} to ${formatDisplay(c.pr.fertileEnd)}. These are estimates from your cycle length, so they’re not reliable for avoiding pregnancy.`};}],
+      [/late|missed|delay|didn.t come|not come|hasn.t come/, ()=>({t:"Cycles can run late because of stress, travel, illness, weight changes or poor sleep. If there’s any chance you could be pregnant, take a test. If you’re often late, or it’s been 3 months with no period, please see a doctor."})],
+      [/pregnan|conceiv|get pregnant|safe period|safe to have sex/, ()=>({t:"Pregnancy can happen on any day, so tracking dates alone isn’t a safe way to prevent it. A test is best after a missed period. For contraception or trying to conceive, a clinic or doctor can guide you properly."})],
+      [/heavy|clot|soaking|bleeding a lot|too much blood|spotting|between periods/, ()=>({t:"Spotting now and then can be normal. But please get medical help if you soak a pad or tampon every hour for 2 or more hours, pass large clots, feel dizzy or faint, or bleed a lot between periods."})],
+      [/cramp|pain|ache|hurt|period pain/, ()=>{const c=cyc(); return {t:(c.ph.key==="period"?"Since you’re on your period, ":"")+"try a heat pack on your lower belly, a warm drink, gentle stretching or a slow walk, and plenty of water. Over-the-counter pain relief can help if it’s safe for you and you follow the label. If pain is severe, new, or stops you from your normal day, see a doctor."};}],
+      [/bloat|headache|nausea|breast|tender|back pain|swell/, ()=>({t:"Those are common around your period because of hormone shifts. Water, less salt, light movement, warmth and rest can help. If it’s severe or getting worse each month, mention it to a doctor."})],
+      [/mood|pms|sad|cry|angry|irritab|anxious|emotional|overwhelm/, ()=>{const c=cyc(); const late=c.ph.key==="luteal"||c.ph.key==="period"; return {t:(late?"That fits where you are in your cycle. Hormones dip before and during your period and it hits mood. ":"Mood can shift for lots of reasons, hormones included. ")+"Sleep, a walk, a good meal, and talking to someone can help. If low mood is heavy or lasts for weeks, please talk to a doctor."};}],
+      [/crav|food|eat|diet|nutrition|chocolate|hungry|meal/, ()=>({t:"Cravings are normal, especially before your period. Mix comfort food with iron-rich foods like beans, leafy greens, eggs and meat, plus fruit, water and magnesium sources like nuts and dark chocolate. 🍫"})],
+      [/exercis|workout|gym|run|yoga|walk/, ()=>{const c=cyc(); const m={period:"Go gentle: walking, stretching or yoga.",follicular:"Energy is rising, so it’s a good time for harder workouts.",fertile:"You may feel strong and energetic, so enjoy it.",ovulation:"Many people feel their strongest now.",luteal:"Lighter workouts like walking, pilates or yoga can feel best."}; return {t:(c.day&&m[c.ph.key]?m[c.ph.key]+" ":"")+"Listen to your body. Rest days count too."};}],
+      [/tired|fatigue|sleep|energy|exhaust|sleepy/, ()=>({t:"Tiredness is common just before and during your period. Aim for steady sleep, drink water, and eat iron-rich food. If you’re exhausted all the time or your periods are heavy, ask a doctor to check your iron."})],
+      [/irregular|cycle length|how long.*cycle|normal.*cycle|short cycle|long cycle/, ()=>({t:`A typical cycle runs 21 to 35 days and a period lasts 2 to 7 days. Yours is set to ${data.cycleLength} and ${data.periodLength} days. Logging each period makes your predictions more accurate. If your cycles keep changing a lot, a doctor can check why.`})],
+      [/pad|tampon|cup|product|sanitary|hygiene|wash|smell|odou?r|itch/, ()=>({t:"Change pads every 4 to 6 hours, tampons at least every 8 hours, and a cup within 12. Wash only the outside with water or a mild unscented soap. A strong unusual smell, itching or unusual discharge is worth a doctor’s visit."})],
+      [/how (do|to)|log|add (a )?period|use (this|the) app|what can you do|help/, ()=>({t:"On the Cycle tab, tap “Period started today” when it begins, and the ring and predictions update. The calendar shows period, fertile and predicted days. Notes is for how you feel, and Games is for fun. Ask me about your next period, cramps, food, mood, exercise or products.",a:goCycle})],
+      [/privacy|data|who can see|passcode|lock|safe/, ()=>({t:"Everything stays on this phone, nothing is sent anywhere. You can add a passcode in the Privacy card on the Cycle tab.",a:goCycle})],
+      [/note|journal|feeling/, ()=>({t:"The Notes tab is a good place to jot down how you feel, with quick tags like cramps or low energy.",a:goNotes})]
+    ];
+    function botReply(q){ const l=q.toLowerCase().trim(); for(const [re,fn] of INTENTS) if(re.test(l)) return fn();
+      return {t:"I’m not sure about that one yet. I can help with where you are in your cycle, your next period, cramps, mood, food, exercise and products. For a medical worry, a doctor is the best person to ask."}; }
+    function chatAdd(text,who){ const d=document.createElement("div"); d.className="msg "+who; d.textContent=text; $("chatLog").appendChild(d); $("chatLog").scrollTop=$("chatLog").scrollHeight; return d; }
+    function askQ(q){ $("chatInput").value=q; sendChat(); }
+    function sendChat(){
+      const inp=$("chatInput"), q=inp.value.trim(); if(!q) return; inp.value=""; chatAdd(q,"me");
+      const ty=chatAdd("• • •","bot typing"); const r=botReply(q);
+      setTimeout(()=>{ ty.remove(); chatAdd(r.t,"bot");
+        if(r.a){ const b=document.createElement("button"); b.className="msg-act"; b.textContent=r.a[0]; b.onclick=r.a[1]; $("chatLog").appendChild(b); $("chatLog").scrollTop=$("chatLog").scrollHeight; } },450+Math.min(q.length*12,500));
+    }
+    $("chatInput").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); sendChat(); } });
+    chatAdd("Hi Nifemi 🌸 I’m Mrs A. Ask me about your cycle, how you’re feeling, or tap one of the ideas below.","bot");
+    buildKeypad(); updatePinUI(); if(getPin()) showLock("unlock"); else hideLock();
+    let toastT;
+    function toast(m){ const t=document.getElementById("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2200); }
+    function addPeriodToday(){ document.getElementById("periodDate").value=formatDate(new Date()); addPeriod(); }
+    function addChip(t){ const n=document.getElementById("notes"); n.value=(n.value?n.value.replace(/\s+$/,"")+"\n":"")+"• "+t; }
+    (function(){ const h=new Date().getHours(); document.getElementById("greet").textContent=h<12?"Good morning":h<18?"Good afternoon":"Good evening"; })();
+  </script>
+</body>
+</html>
